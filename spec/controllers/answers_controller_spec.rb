@@ -20,12 +20,12 @@ RSpec.describe AnswersController, type: :controller do
     context 'with valid attributes' do
       it 'save answer to db' do
         expect { process :create, method: :post, params: { answer: attributes_for(:answer), question_id: question } }
-            .to change(Answer, :count).by(1)
+            .to change(question.answers, :count).by(1)
       end
 
       it 'redirects to question' do
         process :create, method: :post, params: { answer: attributes_for(:answer), question_id: question }
-        expect(response).to redirect_to question_path(question)
+        expect(response).to redirect_to question
       end
     end
 
