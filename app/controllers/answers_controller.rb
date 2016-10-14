@@ -1,10 +1,11 @@
 class AnswersController < ApplicationController
+  before_action :get_question, only: [:new, :create]
+
   def new
     @answer = Answer.new
   end
 
   def create
-    @question = Question.find(params[:question_id])
     @answer = Answer.new(answer_params)
     @answer.question = @question
 
@@ -19,5 +20,9 @@ class AnswersController < ApplicationController
 
   def answer_params
     params.require(:answer).permit(:body)
+  end
+
+  def get_question
+    @question = Question.find(params[:question_id])
   end
 end
