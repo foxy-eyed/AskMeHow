@@ -2,6 +2,7 @@ FactoryGirl.define do
   factory :question do
     title 'To be or not to be?'
     body 'That is the question'
+    user
 
     factory :question_with_answers do
       transient do
@@ -17,5 +18,6 @@ FactoryGirl.define do
   factory :invalid_question, class: 'Question' do
     title nil
     body nil
+    user
   end
 end
