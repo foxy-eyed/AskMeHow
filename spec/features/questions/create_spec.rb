@@ -22,7 +22,9 @@ feature 'Create question', %q{
 
     expect(page).to have_content data[:title]
     expect(page).to have_content data[:body]
-    expect(page).to have_content 'Question successfully created.'
+    within '.alert-success' do
+      expect(page).to have_content 'Question successfully created.'
+    end
     expect(current_path).to match /^\/questions\/\d+$/
   end
 
@@ -38,7 +40,11 @@ feature 'Create question', %q{
     fill_in 'Body', with: data[:body]
     click_on 'Ask question'
 
-    expect(page).to have_content 'Errors prohibited this record from being saved:'
+    within '.alert-danger' do
+      expect(page).to have_content 'Errors prohibited this record from being saved:'
+      expect(page).to have_content 'Title can\'t be blank'
+      expect(page).to have_content 'Body can\'t be blank'
+    end
     expect(current_path).to eq questions_path
   end
 

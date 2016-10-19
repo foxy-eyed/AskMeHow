@@ -17,8 +17,13 @@ feature 'Create answer', %q{
     fill_in 'Body', with: data[:body]
     click_on 'Add answer'
 
-    expect(find '.answers-list').to have_content data[:body]
-    expect(page).to have_content 'Answer successfully added.'
+    within '.answers-list' do
+      expect(page).to have_content data[:body]
+    end
+
+    within '.alert-success' do
+      expect(page).to have_content 'Answer successfully added.'
+    end
     expect(current_path).to eq question_path(question)
   end
 
@@ -30,8 +35,11 @@ feature 'Create answer', %q{
     fill_in 'Body', with: data[:body]
     click_on 'Add answer'
 
-    expect(page).to have_content 'Answer not added.'
-    expect(current_path).to eq question_path(question)
+    within '.alert-danger' do
+      expect(page).to have_content 'Errors prohibited this record from being saved:'
+      expect(page).to have_content 'Body can\'t be blank'
+    end
+    expect(current_path).to eq question_answers_path(question)
   end
 
   scenario 'Non-authenticated user tries to create answer' do

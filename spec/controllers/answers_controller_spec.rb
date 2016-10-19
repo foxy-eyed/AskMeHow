@@ -10,7 +10,7 @@ RSpec.describe AnswersController, type: :controller do
     context 'with valid attributes' do
       it 'save answer to db' do
         expect { process :create, method: :post, params: { answer: attributes_for(:answer), question_id: question } }
-            .to change(question.answers, :count).by(1)
+            .to change(@user.answers.where(question: question), :count).by(1)
       end
 
       it 'redirects to related question' do
@@ -25,9 +25,9 @@ RSpec.describe AnswersController, type: :controller do
             .to_not change(Answer, :count)
       end
 
-      it 'render new view' do
+      it 'render question page with error msg' do
         process :create, method: :post, params: { answer: attributes_for(:invalid_answer), question_id: question }
-        expect(response).to redirect_to question
+        expect(response).to render_template 'questions/show'
       end
     end
   end

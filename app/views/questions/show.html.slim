@@ -1,4 +1,4 @@
-.row
+.row.button-bar
   .col-sm-12
     - if user_signed_in? && current_user.author_of?(@question)
       = link_to 'Delete', @question, method: :delete, class: 'btn btn-danger btn-sm pull-right',
@@ -13,8 +13,8 @@ h2 Answers
 
 - if @question.answers.present?
   .answers-list
-    - @question.answers.each do |answer|
-      = render 'answer', answer: answer
+    = render @question.answers
+
 - else
   p class="empty-text" No answers yet.
 
