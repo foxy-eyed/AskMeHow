@@ -18,11 +18,16 @@ RSpec.describe QuestionsController, type: :controller do
 
   describe 'GET #show' do
     let(:question) { create(:question) }
+    let(:answer) { create(:answer, question: question) }
 
     before { get :show, params: { id: question.id } }
 
     it 'assigns requested question to @question' do
       expect(assigns(:question)).to eq(question)
+    end
+
+    it 'assigns new Answer to @answer' do
+      expect(assigns(:answer)).to be_a_new(Answer)
     end
 
     it 'renders the show view' do
@@ -31,6 +36,8 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #new' do
+    sign_in_user
+
     before { get :new }
 
     it 'assigns new Question to @question' do
@@ -43,10 +50,12 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'POST #create' do
+    sign_in_user
+
     context 'with valid attributes' do
       it 'save question to db' do
         expect { process :create, method: :post, params: { question: attributes_for(:question) } }
-            .to change(Question, :count).by(1)
+            .to change(@user.questions, :count).by(1)
       end
 
       it 'redirects to show view' do
@@ -66,5 +75,38 @@ RSpec.describe QuestionsController, type: :controller do
         expect(response).to render_template :new
       end
     end
+  end
+
+  describe 'DELETE #destroy' do
+    sign_in_user
+
+    context 'delete by author' do
+      let!(:question) { create(:question, user: @user) }
+
+      it 'deletes question from db' do
+        expect { process :destroy, method: :delete, params: { id: question.id } }
+            .to change(Question, :count).by(-1)
+      end
+
+      it 'redirects to index' do
+        process :destroy, method: :delete, params: { id: question.id }
+        expect(response).to redirect_to questions_path
+      end
+    end
+
+    context 'delete by someone else' do
+      let!(:question) { create(:question) }
+
+      it 'does not delete question from db' do
+        expect { process :destroy, method: :delete, params: { id: question.id } }
+            .to_not change(Question, :count)
+      end
+
+      it 'redirects to index' do
+        process :destroy, method: :delete, params: { id: question.id }
+        expect(response).to redirect_to questions_path
+      end
+    end
+
   end
 end
