@@ -4,9 +4,9 @@ h2 Add your answer
 
 .row
   .col-lg-6.col-md-8.col-sm-12
-    = form_for [@question, @answer] do |f|
+    = form_for [@question, @answer], remote: true do |f|
       .form-group
-        = f.label :body
+        = f.label :body, 'Your answer'
         = f.text_area :body, class: 'form-control'
       div
         = f.submit 'Add answer', class: 'btn btn-primary'
