@@ -1,8 +1,8 @@
 class AnswersController < ApplicationController
-  before_action :authenticate_user!, only: [:create]
-  before_action :get_answer, only: [:destroy]
+  before_action :authenticate_user!
+  before_action :get_answer, only: [:edit, :update, :destroy, :accept]
   before_action :get_question, only: [:create]
-  before_action :check_authority, only: [:destroy]
+  before_action :check_authority, only: [:edit, :update, :destroy]
 
   def create
     @answer = @question.answers.new(answer_params)
@@ -11,9 +11,20 @@ class AnswersController < ApplicationController
     @answer.save
   end
 
+  def edit
+  end
+
+  def update
+    @answer.update(answer_params)
+  end
+
   def destroy
     @answer.destroy
-    redirect_to @answer.question, notice: 'Answer successfully deleted.'
+  end
+
+  def accept
+    return redirect_to @answer.question, alert: 'Permission denied!' unless current_user.author_of?(@answer.question)
+    @answer.accept
   end
 
   private

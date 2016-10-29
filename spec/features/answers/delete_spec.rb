@@ -1,4 +1,4 @@
-require 'rails_helper'
+require 'feature_spec_helper'
 
 feature 'Author can delete answers', %q{
   In order to hide my wrong answer
@@ -10,7 +10,7 @@ feature 'Author can delete answers', %q{
   given(:question) { create(:question) }
   given!(:answer) { create(:answer, question: question, user: user) }
 
-  scenario 'Author of answer deletes it' do
+  scenario 'Author of answer deletes it', js: true do
     sign_in(user)
     visit question_path(question)
 
