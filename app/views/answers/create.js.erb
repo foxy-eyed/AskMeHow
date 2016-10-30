@@ -4,8 +4,16 @@ var $form = $('#new_answer'),
 $alert.remove();
 
 <% if @answer.errors.any? %>
-  $form.prepend('<%= j render 'common/errors', resource: @answer %>');
+  <% if remotipart_submitted? %>
+    $form.prepend('<%= j "#{render 'common/errors', resource: @answer}" %>');
+  <% else %>
+    $form.prepend('<%= j render 'common/errors', resource: @answer %>');
+  <% end %>
 <% else %>
-  $('.answers-list').append('<%= j render @answer %>');
+  <% if remotipart_submitted? %>
+    $('.answers-list').append('<%= j "#{render @answer}" %>');
+  <% else %>
+    $('.answers-list').append('<%= j render @answer %>');
+  <% end %>
   $form.find('.form-control').val('');
 <% end %>
