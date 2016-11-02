@@ -4,7 +4,7 @@ var $form = $('#edit_answer_<%= @answer.id %>'),
 $alert.remove();
 
 <% if @answer.errors.any? %>
-  $form.prepend('<%= j render 'common/errors', resource: @answer %>');
+  $form.prepend('<%= fix_remotipart { render 'common/errors', resource: @answer } %>');
 <% else %>
-  $form.closest('.answer').replaceWith('<%= j render @answer %>');
+  $form.closest('.answer').replaceWith('<%= fix_remotipart { render @answer } %>');
 <% end %>

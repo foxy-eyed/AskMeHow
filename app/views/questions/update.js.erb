@@ -4,7 +4,7 @@ var $form = $('#edit_question_<%= @question.id %>'),
 $alert.remove();
 
 <% if @question.errors.any? %>
-  $form.prepend('<%= j render 'common/errors', resource: @question %>');
+  $form.prepend('<%= fix_remotipart { render 'common/errors', resource: @question } %>');
 <% else %>
-  $form.closest('.question').replaceWith('<%= j render 'questions/question_view' %>');
+  $form.closest('.question').replaceWith('<%= fix_remotipart { render 'questions/question_view' } %>');
 <% end %>
