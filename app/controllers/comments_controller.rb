@@ -40,10 +40,10 @@ class CommentsController < ApplicationController
       @commentable = Answer.find(params[:answer_id])
     end
 
-    render status: :unprocessable_entity unless @commentable
+    head :unprocessable_entity unless @commentable
   end
 
   def check_authority
-    render status: :forbidden unless current_user.author_of?(@comment)
+    head :forbidden unless current_user.author_of?(@comment)
   end
 end
