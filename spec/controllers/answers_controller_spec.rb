@@ -15,9 +15,10 @@ RSpec.describe AnswersController, type: :controller do
                          format: :js }.to change(@user.answers.where(question: question), :count).by(1)
       end
 
-      it 'renders create template' do
+      it 'responds with json, status ok' do
         process :create, method: :post, params: { answer: attributes_for(:answer), question_id: question }, format: :js
-        expect(response).to render_template :create
+        expect(response.content_type).to eq('application/json')
+        expect(response.status).to eq(200)
       end
     end
 
@@ -28,10 +29,10 @@ RSpec.describe AnswersController, type: :controller do
                          format: :js }.to_not change(Answer, :count)
       end
 
-      it 'renders create template with error msg' do
+      it 'responds with status 422' do
         process :create, method: :post, params: { answer: attributes_for(:invalid_answer), question_id: question },
                 format: :js
-        expect(response).to render_template :create
+        expect(response.status).to eq(422)
       end
     end
   end
@@ -142,11 +143,6 @@ RSpec.describe AnswersController, type: :controller do
       it 'deletes answer from db' do
         expect { process :destroy, method: :delete, params: { id: users_answer.id }, format: :js }
             .to change(Answer, :count).by(-1)
-      end
-
-      it 'renders destroy template' do
-        process :destroy, method: :delete, params: { id: users_answer.id }, format: :js
-        expect(response).to render_template :destroy
       end
     end
 

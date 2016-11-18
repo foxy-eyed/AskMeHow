@@ -1,4 +1,4 @@
-.item.question
+.item.question data-question-id="#{@question.id}"
   = render 'common/signature', resource: @question
   .item-content.question-content
     .item-actions
@@ -7,3 +7,5 @@
     .item-body.question-body
       = simple_format(@question.body)
     = render 'common/attachments', resource: @question
+
+  = render 'comments/comments', resource: @question

@@ -1,5 +1,6 @@
 class Answer < ApplicationRecord
   include Votable
+  include Commentable
 
   default_scope { order(accepted: :desc, created_at: :asc) }
 
@@ -9,6 +10,8 @@ class Answer < ApplicationRecord
 
   validates :body, presence: true, length: { minimum: 5 }
   validates :accepted, uniqueness: { scope: :question_id }, if: :accepted
+
+  after_create_commit { AnswersBroadcastJob.perform_later self }
 
   accepts_nested_attributes_for :attachments, reject_if: proc { |attributes| attributes['file'].blank? },
                                 allow_destroy: true
