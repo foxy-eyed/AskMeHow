@@ -23,7 +23,7 @@ feature 'Create question', %q{
     expect(page).to have_content data[:title]
     expect(page).to have_content data[:body]
     within '.alert-success' do
-      expect(page).to have_content 'Question successfully created.'
+      expect(page).to have_content 'Question was successfully created.'
     end
     expect(current_path).to match /^\/questions\/\d+$/
   end
