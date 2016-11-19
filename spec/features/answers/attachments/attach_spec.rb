@@ -18,7 +18,8 @@ feature 'Attach files to answer', %q{
     data = attributes_for(:answer)
     fill_in 'Your answer', with: data[:body]
 
-    first('input[type="file"]').set "#{Rails.root}/spec/files/file_01.txt"
+    click_on '+ Add file'
+    all('input[type="file"]').first.set "#{Rails.root}/spec/files/file_01.txt"
     click_on '+ Add file'
     all('input[type="file"]').last.set "#{Rails.root}/spec/files/file_02.txt"
 

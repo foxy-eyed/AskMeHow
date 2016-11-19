@@ -4,17 +4,14 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :get_answer, only: [:edit, :update, :destroy, :accept]
   before_action :get_question, only: [:create]
-  before_action :check_authority, only: [:edit, :update, :destroy]
+  before_action :check_answer_authority, only: [:edit, :update, :destroy]
+  before_action :check_question_authority, only: [:accept]
+
+  respond_to :js, only: [:edit, :update, :accept]
+  respond_to :json, only: [:create, :destroy]
 
   def create
-    @answer = @question.answers.new(answer_params)
-    @answer.user = current_user
-
-    if @answer.save
-      render json: @answer
-    else
-      render json: @answer.errors, status: :unprocessable_entity
-    end
+    respond_with(@question.answers.create(answer_params.merge(user: current_user)))
   end
 
   def edit
@@ -22,15 +19,16 @@ class AnswersController < ApplicationController
 
   def update
     @answer.update(answer_params)
+    respond_with(@answer)
   end
 
   def destroy
-    @answer.destroy
+    respond_with(@answer.destroy)
   end
 
   def accept
-    return redirect_to @answer.question, alert: 'Permission denied!' unless current_user.author_of?(@answer.question)
     @answer.accept
+    respond_with(@answer)
   end
 
   private
@@ -47,7 +45,11 @@ class AnswersController < ApplicationController
     @question = Question.find(params[:question_id])
   end
 
-  def check_authority
-    redirect_to @answer.question, alert: 'Permission denied!' unless current_user.author_of?(@answer)
+  def check_answer_authority
+    head :forbidden unless current_user.author_of?(@answer)
+  end
+
+  def check_question_authority
+    head :forbidden unless current_user.author_of?(@answer.question)
   end
 end
