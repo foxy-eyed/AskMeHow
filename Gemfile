@@ -41,6 +41,10 @@ gem 'cocoon'
 gem 'skim'
 gem 'gon'
 gem 'responders'
+gem 'omniauth'
+gem 'omniauth-facebook'
+gem 'omniauth-twitter', '~> 1.2'
+gem 'high_voltage', '~> 3.0.0'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -50,7 +54,7 @@ group :development, :test do
   gem 'rails-controller-testing'
   gem 'launchy'
   gem 'shoulda-matchers'
-  gem 'capybara'
+  gem 'capybara', '~> 2.10', '>= 2.10.1'
   gem 'capybara-webkit'
   gem 'database_cleaner'
 end
