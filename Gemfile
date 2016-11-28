@@ -45,6 +45,7 @@ gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'omniauth-twitter', '~> 1.2'
 gem 'high_voltage', '~> 3.0.0'
+gem 'cancancan'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
