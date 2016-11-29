@@ -5,10 +5,11 @@ class QuestionsController < ApplicationController
   before_action :get_question, only: [:show, :edit, :update, :destroy]
   before_action :build_answer, only: :show
   before_action :store_user_id, only: :show
-  before_action :check_authority, only: [:edit, :update, :destroy]
 
   respond_to :html
   respond_to :js, only: [:edit, :update]
+
+  authorize_resource
 
   def index
     respond_with(@questions = Question.includes(:user))
@@ -54,9 +55,5 @@ class QuestionsController < ApplicationController
 
   def store_user_id
     gon.push({ current_user_id: current_user.id }) if user_signed_in?
-  end
-
-  def check_authority
-    redirect_to questions_path, alert: 'Permission denied!' unless current_user.author_of?(@question)
   end
 end
