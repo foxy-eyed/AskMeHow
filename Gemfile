@@ -46,6 +46,7 @@ gem 'omniauth-facebook'
 gem 'omniauth-twitter', '~> 1.2'
 gem 'high_voltage', '~> 3.0.0'
 gem 'cancancan'
+gem 'doorkeeper'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -58,6 +59,10 @@ group :development, :test do
   gem 'capybara', '~> 2.10', '>= 2.10.1'
   gem 'capybara-webkit'
   gem 'database_cleaner'
+end
+
+group :test do
+  gem 'json_spec'
 end
 
 group :development do
