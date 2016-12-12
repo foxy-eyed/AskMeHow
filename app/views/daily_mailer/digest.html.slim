@@ -1,0 +1,12 @@
+h2= "Hello, #{@user.email}!"
+
+p New questions created yesterday:
+ul
+  - @questions.each do |question|
+    li
+      = link_to question.title, question_url(question)
+      |&nbsp;(
+      = question.user.email
+      span &nbsp;|&nbsp;
+      em= question.created_at.strftime '%b %-d \'%y at %H:%M'
+      |)
