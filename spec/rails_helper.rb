@@ -6,7 +6,7 @@ abort("The Rails environment is running in production mode!") if Rails.env.produ
 require 'spec_helper'
 require 'rspec/rails'
 require 'cancan/matchers'
-# Add additional requires below this line. Rails is not loaded until this point!
+require 'sidekiq/testing'
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
@@ -67,3 +67,5 @@ Shoulda::Matchers.configure do |config|
     with.library :rails
   end
 end
+
+Sidekiq::Testing.fake!
