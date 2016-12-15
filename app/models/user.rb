@@ -6,6 +6,7 @@ class User < ApplicationRecord
   has_many :questions, dependent: :nullify
   has_many :answers, dependent: :nullify
   has_many :identities, dependent: :destroy
+  has_many :subscriptions, dependent: :destroy
 
   def self.find_for_oauth(auth)
     return if auth.blank?

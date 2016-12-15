@@ -9,7 +9,7 @@ class DailyDigestJob < ApplicationJob
     return if @questions.empty?
 
     User.find_each do |user|
-      DailyMailer.digest(user, @questions).deliver_now
+      DailyMailer.digest(user, @questions).deliver_later
     end
   end
 
