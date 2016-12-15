@@ -63,6 +63,7 @@ group :development, :test do
   gem 'shoulda-matchers'
   gem 'capybara', '~> 2.10', '>= 2.10.1'
   gem 'capybara-webkit'
+  gem 'capybara-email'
   gem 'database_cleaner'
 end
 
