@@ -13,6 +13,11 @@ FactoryGirl.define do
         create_list(:answer, evaluator.answers_count, question: question)
       end
     end
+
+    factory :yesterdays_question do
+      created_at Date.yesterday
+    end
+
   end
 
   factory :invalid_question, class: 'Question' do

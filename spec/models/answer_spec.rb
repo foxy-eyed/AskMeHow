@@ -35,4 +35,21 @@ RSpec.describe Answer, type: :model do
       expect(accepted_answer.reload).to_not be_accepted
     end
   end
+
+  describe 'Send notifications after create' do
+    let(:user) { create(:user) }
+    let(:question) { create(:question, user: user) }
+    subject { build(:answer, question: question) }
+
+    it 'should push notification job to queue after answer create' do
+      expect(AnswersNotificationJob).to receive(:perform_later)
+      subject.save!
+    end
+
+    it 'should not create job after update' do
+      subject.save!
+      expect(AnswersNotificationJob).to_not receive(:perform_later)
+      subject.update!(body: 'updated body')
+    end
+  end
 end

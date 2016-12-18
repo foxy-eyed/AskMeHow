@@ -12,6 +12,7 @@ class Answer < ApplicationRecord
   validates :accepted, uniqueness: { scope: :question_id }, if: :accepted
 
   after_create_commit { AnswersBroadcastJob.perform_later self }
+  after_create_commit { AnswersNotificationJob.perform_later self }
 
   scope :accepted, -> { where(accepted: true) }
 
