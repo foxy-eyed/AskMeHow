@@ -1,0 +1,6 @@
+- if @subscription.persisted?
+  = link_to 'Unsubscribe', subscription_path(@subscription), remote: true, method: :delete,
+          class: 'btn btn-primary btn-sm pull-right subscription-btn', role: 'button'
+- else
+  = link_to 'Subscribe', question_subscriptions_path(@question), remote: true, method: :post,
+          class: 'btn btn-primary btn-sm pull-right subscription-btn', role: 'button'

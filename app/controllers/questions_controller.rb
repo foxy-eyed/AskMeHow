@@ -4,6 +4,7 @@ class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action :get_question, only: [:show, :edit, :update, :destroy]
   before_action :build_answer, only: :show
+  before_action :check_subscription, only: :show
   before_action :store_user_id, only: :show
 
   respond_to :html
@@ -55,5 +56,9 @@ class QuestionsController < ApplicationController
 
   def store_user_id
     gon.push({ current_user_id: current_user.id }) if user_signed_in?
+  end
+
+  def check_subscription
+    @subscription = Subscription.find_or_initialize_by(user_id: current_user, question: @question) if can?(:create, Subscription)
   end
 end
