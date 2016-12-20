@@ -3,7 +3,7 @@ class SubscriptionsController < ApplicationController
   before_action :get_subscription, only: :destroy
   before_action :get_question, only: :create
 
-  respond_to :json
+  respond_to :js
 
   authorize_resource
 

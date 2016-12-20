@@ -7,14 +7,8 @@ RSpec.describe SubscriptionsController, type: :controller do
   describe 'POST #create' do
     context 'if user was not subscribed before' do
       it 'creates new subscription in db' do
-        expect { process :create, method: :post, params: { question_id: question }, format: :json }
+        expect { process :create, method: :post, params: { question_id: question }, format: :js }
             .to change(@user.subscriptions.where(question: question), :count).by(1)
-      end
-
-      it 'responds with json, status "created"' do
-        process :create, method: :post, params: { question_id: question }, format: :json
-        expect(response.content_type).to eq('application/json')
-        expect(response.status).to eq(201)
       end
     end
 
@@ -22,14 +16,14 @@ RSpec.describe SubscriptionsController, type: :controller do
       let!(:subscription) { create(:subscription, user: @user, question: question) }
 
       it 'does not create new record in db' do
-        expect { process :create, method: :post, params: { question_id: question }, format: :json }
+        expect { process :create, method: :post, params: { question_id: question }, format: :js }
             .to_not change(Subscription, :count)
       end
+    end
 
-      it 'responds with status 422' do
-        process :create, method: :post, params: { question_id: question }, format: :json
-        expect(response.status).to eq(422)
-      end
+    it 'renders create view' do
+      process :create, method: :post, params: { question_id: question }, format: :js
+      expect(response).to render_template :create
     end
   end
 
@@ -38,7 +32,7 @@ RSpec.describe SubscriptionsController, type: :controller do
       let!(:subscription) { create(:subscription, user: @user) }
 
       it 'deletes subscription from db' do
-        expect { process :destroy, method: :delete, params: { id: subscription.id }, format: :json }
+        expect { process :destroy, method: :delete, params: { id: subscription.id }, format: :js }
             .to change(Subscription, :count).by(-1)
       end
     end
@@ -47,12 +41,12 @@ RSpec.describe SubscriptionsController, type: :controller do
       let!(:subscription) { create(:subscription) }
 
       it 'does not delete subscription from db' do
-        expect { process :destroy, method: :delete, params: { id: subscription.id }, format: :json }
+        expect { process :destroy, method: :delete, params: { id: subscription.id }, format: :js }
             .to_not change(Subscription, :count)
       end
 
       it 'responds with status 403 (forbidden)' do
-        process :destroy, method: :delete, params: { id: subscription.id }, format: :json
+        process :destroy, method: :delete, params: { id: subscription.id }, format: :js
         expect(response.status).to eq(403)
       end
     end
