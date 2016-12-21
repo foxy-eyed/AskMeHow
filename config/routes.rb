@@ -1,3 +1,5 @@
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
   use_doorkeeper
 
@@ -21,6 +23,7 @@ Rails.application.routes.draw do
               concerns: [:votable, :commentable], shallow: true do
       patch :accept, on: :member
     end
+    resources :subscriptions, only: [:create, :destroy], shallow: true
   end
 
   namespace :api do
@@ -35,4 +38,8 @@ Rails.application.routes.draw do
   end
 
   mount ActionCable.server => '/cable'
+
+  authenticate :user, lambda { |u| u.admin? } do
+    mount Sidekiq::Web => '/sidekiq'
+  end
 end

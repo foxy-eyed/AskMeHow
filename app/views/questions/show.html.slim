@@ -4,7 +4,9 @@
       = link_to 'Delete', @question, method: :delete, class: 'btn btn-danger btn-sm pull-right',
               id: 'delete-question-btn', role: 'button'
       = link_to 'Edit', edit_question_path(@question), remote: true, class: 'btn btn-primary btn-sm pull-right',
-                id: 'edit-question-btn', role: 'button'
+              id: 'edit-question-btn', role: 'button'
+    - if can?(:create, Subscription)
+      = render 'questions/subscribe'
 
 = render 'questions/question_view'
 

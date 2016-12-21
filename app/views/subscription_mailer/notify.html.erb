@@ -1,0 +1,6 @@
+<h2><%= "Hello, #{@user.email}!" %></h2>
+
+<p><%= "User #{@answer.user.email} answered question you subscribed:" %></p>
+<p><%= link_to @answer.question.title, question_url(@answer.question) %></p>
+<div><%= simple_format(@answer.body) %></div>
+<p><%= link_to 'Read all discussion', question_url(@answer.question) %></p>
