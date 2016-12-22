@@ -1,0 +1,10 @@
+h1 Search
+= render 'form'
+
+- if @search.result
+  - if @search.result.empty?
+    p No results
+  - else
+    .search-results
+      - @search.result.each do |item|
+        = render "#{item.class.to_s.underscore}", resource: item

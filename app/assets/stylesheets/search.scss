@@ -1,0 +1,17 @@
+.search-results {
+  font-size: 13px;
+
+  .user {
+    margin-bottom: 10px;
+    line-height: 32px;
+    position: relative;
+    padding-left: 50px;
+
+    .avatar {
+      border-radius: 50%;
+      overflow: hidden;
+      position: absolute;
+      left: 9px;
+    }
+  }
+}
