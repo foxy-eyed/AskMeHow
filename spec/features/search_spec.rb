@@ -17,67 +17,76 @@ feature 'Search', %q{
 
   given!(:user) { create(:user, email: 'searchable@mail.com')}
 
-  before do
+  scenario 'when empty query', sphinx: true do
     index
     visit search_path
-    fill_in 'Query', with: 'searchable'
+    click_button 'Search'
+    expect(page).to have_content 'query can\'t be blank'
   end
 
-  scenario 'scope not given', sphinx: true do
-    click_button 'Search'
+  context 'when query in not empty' do
+    before do
+      index
+      visit search_path
+      fill_in 'Query', with: 'searchable'
+    end
 
-    expect(page).to have_content question1.title
-    expect(page).to have_content answer1.body
-    expect(page).to have_content answer_comment.body
-    expect(page).to have_content question_comment.body
-    expect(page).to have_content user.email
+    scenario 'scope not given', sphinx: true do
+      click_button 'Search'
 
-    expect(page).to_not have_content question2.title
-    expect(page).to_not have_content answer2.body
-  end
+      expect(page).to have_content question1.title
+      expect(page).to have_content answer1.body
+      expect(page).to have_content answer_comment.body
+      expect(page).to have_content question_comment.body
+      expect(page).to have_content user.email
 
-  scenario 'searching for questions', sphinx: true do
-    select 'questions', from: 'Scope'
-    click_button 'Search'
+      expect(page).to_not have_content question2.title
+      expect(page).to_not have_content answer2.body
+    end
 
-    expect(page).to have_content question1.title
+    scenario 'searching for questions', sphinx: true do
+      select 'questions', from: 'Scope'
+      click_button 'Search'
 
-    expect(page).to_not have_content answer1.body
-    expect(page).to_not have_content answer_comment.body
-    expect(page).to_not have_content user.email
-  end
+      expect(page).to have_content question1.title
 
-  scenario 'searching for answers', sphinx: true do
-    select 'answers', from: 'Scope'
-    click_button 'Search'
+      expect(page).to_not have_content answer1.body
+      expect(page).to_not have_content answer_comment.body
+      expect(page).to_not have_content user.email
+    end
 
-    expect(page).to have_content answer1.body
+    scenario 'searching for answers', sphinx: true do
+      select 'answers', from: 'Scope'
+      click_button 'Search'
 
-    expect(page).to_not have_content question1.title
-    expect(page).to_not have_content answer_comment.body
-    expect(page).to_not have_content user.email
-  end
+      expect(page).to have_content answer1.body
 
-  scenario 'searching for comments', sphinx: true do
-    select 'comments', from: 'Scope'
-    click_button 'Search'
+      expect(page).to_not have_content question1.title
+      expect(page).to_not have_content answer_comment.body
+      expect(page).to_not have_content user.email
+    end
 
-    expect(page).to have_content answer_comment.body
-    expect(page).to have_content question_comment.body
+    scenario 'searching for comments', sphinx: true do
+      select 'comments', from: 'Scope'
+      click_button 'Search'
 
-    expect(page).to_not have_content question1.title
-    expect(page).to_not have_content answer1.body
-    expect(page).to_not have_content user.email
-  end
+      expect(page).to have_content answer_comment.body
+      expect(page).to have_content question_comment.body
 
-  scenario 'searching for users', sphinx: true do
-    select 'users', from: 'Scope'
-    click_button 'Search'
+      expect(page).to_not have_content question1.title
+      expect(page).to_not have_content answer1.body
+      expect(page).to_not have_content user.email
+    end
 
-    expect(page).to have_content user.email
+    scenario 'searching for users', sphinx: true do
+      select 'users', from: 'Scope'
+      click_button 'Search'
 
-    expect(page).to_not have_content question1.title
-    expect(page).to_not have_content answer1.body
-    expect(page).to_not have_content answer_comment.body
+      expect(page).to have_content user.email
+
+      expect(page).to_not have_content question1.title
+      expect(page).to_not have_content answer1.body
+      expect(page).to_not have_content answer_comment.body
+    end
   end
 end
