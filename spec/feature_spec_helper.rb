@@ -27,7 +27,6 @@ RSpec.configure do |config|
 
   config.before(:each, sphinx: true) do
     DatabaseCleaner.strategy = :truncation
-    index
   end
 
   config.before(:each) do

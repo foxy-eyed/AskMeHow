@@ -6,24 +6,78 @@ feature 'Search', %q{
   I want to be able to search on website
 } do
 
-  given!(:questions) { create_list(:question, 2) }
-  given!(:question) { create(:question, title: 'irregular_title') }
+  given!(:question1) { create(:question, title: 'searchable question title') }
+  given!(:question2) { create(:question, title: 'invisible question title') }
 
-  given!(:answers) { create_list(:answer, 2) }
-  given!(:answer) { create(:question, title: 'irregular_body') }
+  given!(:answer1) { create(:answer, body: 'searchable answer body') }
+  given!(:answer2) { create(:answer, body: 'invisible answer body') }
+
+  given!(:question_comment) { create(:comment, commentable: question1, body: 'searchable question comment text') }
+  given!(:answer_comment) { create(:comment, commentable: answer1, body: 'searchable answer comment text') }
+
+  given!(:user) { create(:user, email: 'searchable@mail.com')}
 
   before do
+    index
     visit search_path
+    fill_in 'Query', with: 'searchable'
+  end
+
+  scenario 'scope not given', sphinx: true do
+    click_button 'Search'
+
+    expect(page).to have_content question1.title
+    expect(page).to have_content answer1.body
+    expect(page).to have_content answer_comment.body
+    expect(page).to have_content question_comment.body
+    expect(page).to have_content user.email
+
+    expect(page).to_not have_content question2.title
+    expect(page).to_not have_content answer2.body
   end
 
   scenario 'searching for questions', sphinx: true do
-    fill_in 'Query', with: 'question_title'
     select 'questions', from: 'Scope'
-    click_on 'Search'
+    click_button 'Search'
 
-    questions.each do |q|
-      expect(page).to have_content q.title
-    end
-    expect(page).to_not have_content 'irregular_title'
+    expect(page).to have_content question1.title
+
+    expect(page).to_not have_content answer1.body
+    expect(page).to_not have_content answer_comment.body
+    expect(page).to_not have_content user.email
+  end
+
+  scenario 'searching for answers', sphinx: true do
+    select 'answers', from: 'Scope'
+    click_button 'Search'
+
+    expect(page).to have_content answer1.body
+
+    expect(page).to_not have_content question1.title
+    expect(page).to_not have_content answer_comment.body
+    expect(page).to_not have_content user.email
+  end
+
+  scenario 'searching for comments', sphinx: true do
+    select 'comments', from: 'Scope'
+    click_button 'Search'
+
+    expect(page).to have_content answer_comment.body
+    expect(page).to have_content question_comment.body
+
+    expect(page).to_not have_content question1.title
+    expect(page).to_not have_content answer1.body
+    expect(page).to_not have_content user.email
+  end
+
+  scenario 'searching for users', sphinx: true do
+    select 'users', from: 'Scope'
+    click_button 'Search'
+
+    expect(page).to have_content user.email
+
+    expect(page).to_not have_content question1.title
+    expect(page).to_not have_content answer1.body
+    expect(page).to_not have_content answer_comment.body
   end
 end
