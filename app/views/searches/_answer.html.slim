@@ -1,0 +1,8 @@
+.item.row
+  .col-sm-2
+    span Answer
+  .col-sm-10
+    .item-content.answer-content
+      = render 'common/signature', resource: resource
+      .item-body.answer-body
+        div= simple_format(resource.body)

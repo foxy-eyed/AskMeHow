@@ -1,0 +1,7 @@
+.item.row
+  .col-sm-2
+    span User
+  .col-sm-10
+    .user
+      .avatar= gravatar_image_tag(resource.email)
+      mark= resource.email

@@ -1,0 +1,10 @@
+.item.row
+  .col-sm-2
+    span Question
+  .col-sm-10
+    = render 'common/signature', resource: resource
+    .item-body
+      h4
+        = link_to resource.title, resource
+      div
+        = resource.body

@@ -18,6 +18,8 @@ Rails.application.routes.draw do
     resources :comments, only: [:new, :create, :destroy], shallow: true
   end
 
+  resource :search, only: :show
+
   resources :questions, concerns: [:votable, :commentable] do
     resources :answers, only: [:create, :edit, :update, :destroy],
               concerns: [:votable, :commentable], shallow: true do
