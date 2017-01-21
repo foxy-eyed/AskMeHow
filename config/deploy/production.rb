@@ -26,6 +26,7 @@ role :db,  %w{deployer@46.101.239.7}
 # Feel free to add new variables to customise your setup.
 
 set :rails_env, :production
+set :stage, :production
 
 # Custom SSH Options
 # ==================
