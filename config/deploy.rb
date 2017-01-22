@@ -11,6 +11,8 @@ set :deploy_user, 'deployer'
 # Default value for :format is :airbrussh.
 set :format, :pretty
 
+set :default_env, { rvm_bin_path: '~/.rvm/bin' }
+
 # Default value for :linked_files is []
 append :linked_files, 'config/database.yml', 'config/secrets.yml', '.env'
 
