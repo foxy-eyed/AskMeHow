@@ -14,7 +14,7 @@ set :format, :pretty
 set :default_env, { rvm_bin_path: '~/.rvm/bin' }
 
 # Default value for :linked_files is []
-append :linked_files, 'config/database.yml', 'config/secrets.yml', '.env'
+append :linked_files, 'config/database.yml', 'config/secrets.yml', 'config/production.sphinx.conf', '.env'
 
 # Default value for linked_dirs is []
 append :linked_dirs, 'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'public/system', 'public/uploads', 'vendor/bundle'
