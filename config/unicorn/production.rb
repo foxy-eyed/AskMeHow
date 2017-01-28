@@ -4,7 +4,7 @@ working_directory "#{app_path}/current"
 pid               "#{app_path}/current/tmp/pids/unicorn.pid"
 
 # listen
-listen '/tmp/unicorn.askmehow.sock', backlog: 64
+listen '/home/deployer/askmehow/shared/tmp/sockets/unicorn.askmehow.sock', backlog: 64
 
 # logging
 stderr_path 'log/unicorn.stderr.log'
