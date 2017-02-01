@@ -3,9 +3,10 @@
   .item-content.question-content
     .item-actions
       = render 'votes/vote', resource: @question
-    h1= @question.title
-    .item-body.question-body
-      = simple_format(@question.body)
-    = render 'common/attachments', resource: @question
+    - cache @question do
+      h1= @question.title
+      .item-body.question-body
+        = simple_format(@question.body)
+      = render 'common/attachments', resource: @question
 
   = render 'comments/comments', resource: @question

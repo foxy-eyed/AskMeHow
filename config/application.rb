@@ -26,5 +26,7 @@ module AskMeHow
           controller_specs: true
       g.fixture_replacement :factory_girl, dir: 'spec/factories'
     end
+
+    config.cache_store = :redis_store, 'redis://127.0.0.1:6379/0/cache', { expires_in: 120.minutes }
   end
 end
